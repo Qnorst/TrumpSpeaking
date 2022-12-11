@@ -1,0 +1,43 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="1.1.1" author="vladimir">
+        <createTable schemaName="public" tableName="users_telegram">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="find_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.2" author="vladimir">
+        <createTable schemaName="public" tableName="favorite_quotes">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="text_quote" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title_quote" type="varchar(150)" defaultValue="RandomQuote">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.3" author="vladimir">
+        <addForeignKeyConstraint referencedTableSchemaName="public"
+                                 baseTableName="favorite_quotes"
+                                 baseColumnNames="id_user"
+                                 constraintName="fk_favorite_quotes_to_users_telegram"
+                                 onDelete="CASCADE"
+                                 referencedTableName="users_telegram"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

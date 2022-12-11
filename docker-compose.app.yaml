@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-trump}
+      POSTGRES_USER: ${DB_USER:-vladimir}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-12345}
+    volumes:
+      - dbData:/var/lib/postgres
+    ports:
+      - "${PORT_DB:-5432}:5432"
+    networks:
+      - service
+
+  java:
+    build:
+      context: .
+      dockerfile: workApp/Dockerfile
+      args:
+        HOST_DB: ${HOST_DB:-postgres}
+    networks:
+      - service
+
+volumes:
+  dbData:
+    driver: local
+
+networks:
+  service:
+    driver: bridge
